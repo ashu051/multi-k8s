@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: cl
-        image: stephengrider/multi-client
+        image: 8800205482/multi-client
         ports:
         - containerPort: 3000
