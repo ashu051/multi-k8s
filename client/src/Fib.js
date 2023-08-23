@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class Fib extends Component {
   state = {
-    seenIndexes: [],
+    seenIndexes: [], // Initialize as an empty array
     values: {},
     index: '',
   };
@@ -19,12 +19,21 @@ class Fib extends Component {
   }
 
   async fetchIndexes() {
-    const seenIndexes = await axios.get('/api/values/all');
-    this.setState({
-      seenIndexes: seenIndexes.data,
-    });
+    try {
+      const response = await axios.get('/api/values/all');
+      const seenIndexes = response.data;
+  
+      if (Array.isArray(seenIndexes) && seenIndexes.length > 0 && seenIndexes[0].hasOwnProperty('number')) {
+        this.setState({
+          seenIndexes: seenIndexes,
+        });
+      } else {
+        console.error('Invalid data format received from API:', seenIndexes);
+      }
+    } catch (error) {
+      console.error('Error fetching seenIndexes:', error);
+    }
   }
-
   handleSubmit = async (event) => {
     event.preventDefault();
 
